@@ -38,17 +38,6 @@
     border-radius: 10px;
     direction: rtl;
 }
-.PlayerHealths{
-    position: absolute;
-    top: 8%;
-    left: 0;
-    width:10%;
-    height: 15px;
-    background-color: red;
-    border: 2px solid white;
-    border-radius: 10px;
-    direction: rtl;
-}
 
 #HealthBar{
     width: 0%;
@@ -57,12 +46,44 @@
     border-radius: 10px;
 }
 
+
+.PlayerHealths{
+    position: absolute;
+    margin-top: 50px;
+    width:10%;
+    height: 15px;
+    background-color: red;
+    border: 2px solid white;
+    /* border-radius: 10px; */
+    direction: rtl;
+}
+
+
 #PlayerHealthBar{
     width: 0%;
     height: 100%;
     background-color: black;
-    border-radius: 10px;
+    /* border-radius: 10px; */
 }
+
+.PlayerStamina{
+    position: absolute;
+    margin-top: 65px;
+    width:10%;
+    height: 15px;
+    background-color: rgb(0, 146, 146);
+    border: 2px solid white;
+    /* border-radius: 10px; */
+    direction: rtl;
+}
+
+#PlayerStaminaBar{
+    width: 0%;
+    height: 100%;
+    background-color: black;
+    /* border-radius: 10px; */
+}
+
 
 #LoseScreen{
     display: none;
