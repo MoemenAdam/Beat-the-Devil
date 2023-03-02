@@ -172,29 +172,29 @@ class Player{
 };
 //Math.floor(Math.random() * (canvas.width-MainWidth)),canvas.height-Mainheight
 
-const Player1 = new Player(0,320,9,'images/idle/idle.png',{
+const Player1 = new Player(0,320,9,'/images/idle/idle.png',{
     idle:{
-        imageSrc : 'images/idle/idle.png',
+        imageSrc : '/images/idle/idle.png',
         FrameRate : 9,
         Delay : 15
     },
     idleLeft:{
-        imageSrc : 'images/idle/idleLeft.png',
+        imageSrc : '/images/idle/idleLeft.png',
         FrameRate : 9,
         Delay : 15
     },
     Run:{
-        imageSrc : 'images/Movement/Run.png',
+        imageSrc : '/images/Movement/Run.png',
         FrameRate : 6,
         Delay : 15
     },
     RunLeft:{
-        imageSrc : 'images/Movement/RunLeft.png',
+        imageSrc : '/images/Movement/RunLeft.png',
         FrameRate : 6,
         Delay : 15
     },
     Attack:{
-        imageSrc : 'images/Attack/Attack.png',
+        imageSrc : '/images/Attack/Attack.png',
         FrameRate : 11.9,
         Delay : 2
     },
@@ -204,69 +204,69 @@ const Player1 = new Player(0,320,9,'images/idle/idle.png',{
         Delay : 2
     },
     Death:{
-        imageSrc : 'images/Death/Death.png',
+        imageSrc : '/images/Death/Death.png',
         FrameRate : 23,
         Delay : 15
     },
     Hit:{
-        imageSrc : 'images/Hit/Hit.png',
+        imageSrc : '/images/Hit/Hit.png',
         FrameRate : 4.7,
         Delay : 20
     },
     None:{
-        imageSrc : 'images/None.png',
+        imageSrc : '/images/None.png',
         FrameRate : 5,
         Delay : 2
     }
 });
-const Enemy = new Player(1160,340,9,'images/idle/idleLeft.png',{
+const Enemy = new Player(1160,340,9,'/images/idle/idleLeft.png',{
     idle:{
-        imageSrc : 'images/idle/idleLeft.png',
+        imageSrc : '/images/idle/idleLeft.png',
         FrameRate : 9,
         Delay : 15
     },
     idleLeft:{
-        imageSrc : 'images/idle/idle.png',
+        imageSrc : '/images/idle/idle.png',
         FrameRate : 9,
         Delay : 15
     },
     Run:{
-        imageSrc : 'images/Movement/RunLeft.png',
+        imageSrc : '/images/Movement/RunLeft.png',
         FrameRate : 6,
         Delay : 15
     },
     RunLeft:{
-        imageSrc : 'images/Movement/Run.png',
+        imageSrc : '/images/Movement/Run.png',
         FrameRate : 6,
         Delay : 15
     },
     Attack:{
-        imageSrc : 'images/Attack/AttackLeft.png',
+        imageSrc : '/images/Attack/AttackLeft.png',
         FrameRate : 11.9,
         Delay : 2 
     },
     AttackLeft:{
-        imageSrc : 'images/Attack/Attack.png',
+        imageSrc : '/images/Attack/Attack.png',
         FrameRate : 12.06,
         Delay : 2
     },
     Death:{
-        imageSrc : 'images/Death/Death.png',
+        imageSrc : '/images/Death/Death.png',
         FrameRate : 23,
         Delay : 15
     },
     Hit:{
-        imageSrc : 'images/Hit/Hit.png',
+        imageSrc : '/images/Hit/Hit.png',
         FrameRate : 5,
         Delay : 2
     },
     None:{
-        imageSrc : 'images/None.png',
+        imageSrc : '/images/None.png',
         FrameRate : 1,
         Delay : 1
     }
 });
-const background = new Assets(0,0,'images/Background/Background3.png');
+const background = new Assets(0,0,'/images/Background/Background3.png');
 
 let DamageCounter=0,Damage2Counter=0,AttackCounter=0,Attack2Counter=0,EnemyHealthBar=20,PlayerHealthBar=1;
 let EnemySpeed=5,ShouldiStop=false,EnemyDeath=false,PlayerDeath=false;
