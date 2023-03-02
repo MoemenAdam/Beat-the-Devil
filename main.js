@@ -219,7 +219,7 @@ const Player1 = new Player(0,320,9,'images/idle/idle.png',{
         Delay : 2
     }
 });
-const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
+const Enemy = new Player(1160,340,9,'images/idle/idleLeft.png',{
     idle:{
         imageSrc : 'images/idle/idleLeft.png',
         FrameRate : 9,
@@ -342,6 +342,7 @@ function Anime(){
     // Draw our (Players/Enemies) everytime
     Player1.PlayerUpdate();
     Enemy.PlayerUpdate();
+    console.log(Enemy.position.y);
     // Move enemy towards Our Player
 
     if(Player1.position.x < Enemy.position.x - 100){
