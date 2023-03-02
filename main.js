@@ -3,7 +3,6 @@
 
 
 // Music End
-location.reload();
 
 let canvas = document.getElementById('GameScreen');
 let c = canvas.getContext('2d');
