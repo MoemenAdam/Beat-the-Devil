@@ -273,6 +273,7 @@ let EnemySpeed=5,ShouldiStop=false,EnemyDeath=false,PlayerDeath=false;
 
 let DefPlayerX=0,DefPlayerY=320,DefEnemyX,DefEnemyY,DeathFrames=0;
 
+Enemy.Scale=0.5;
 function DeathScene(){
     window.requestAnimationFrame(DeathScene);  
     background.imageUpdate();
@@ -342,7 +343,6 @@ function Anime(){
     // Draw our (Players/Enemies) everytime
     Player1.PlayerUpdate();
     Enemy.PlayerUpdate();
-    console.log(Enemy.position.y);
     // Move enemy towards Our Player
 
     if(Player1.position.x < Enemy.position.x - 100){
