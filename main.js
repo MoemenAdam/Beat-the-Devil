@@ -346,7 +346,7 @@ function Anime(){
     Enemy.PlayerUpdate();
     // Move enemy towards Our Player
     
-    if(Enemycntr>=100){
+    if(Enemycntr>=120){
     if(Player1.position.x < Enemy.position.x - 100){
         Enemy.swichAnimation('Run');
         Enemy.position.x-=EnemySpeed;
