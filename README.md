@@ -12,7 +12,11 @@ Hope you Like it
 it Took me 5 Days to bould it But it's still in Beta not Finished yet Hope you Like it 
 
 
-
+x --> Attack
+ArrowUP/Space --> Jump
+ArrowLeft --> Run Left
+ArrowRight --> Run Right
+Shift ---> Dash
 
 ## Demo Link
 
