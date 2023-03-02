@@ -219,7 +219,7 @@ const Player1 = new Player(0,320,9,'images/idle/idle.png',{
         Delay : 2
     }
 });
-const Enemy = new Player(1160,340,9,'images/idle/idleLeft.png',{
+const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
     idle:{
         imageSrc : 'images/idle/idleLeft.png',
         FrameRate : 9,
@@ -328,7 +328,7 @@ function EnemyDeathScene(){
         ShouldiStop=true;
     }
 }
-
+let Enemycntr=0
 function Anime(){
     // Main Screen Reapeat
     if(!ShouldiStop)window.requestAnimationFrame(Anime);
@@ -337,6 +337,7 @@ function Anime(){
         if(PlayerDeath)DeathScene();
         else if(EnemyDeath)EnemyDeathScene();
     }
+    Enemycntr++;
     // Allways draw our Background top of other Characters and players  
     background.imageUpdate();
 
@@ -344,7 +345,8 @@ function Anime(){
     Player1.PlayerUpdate();
     Enemy.PlayerUpdate();
     // Move enemy towards Our Player
-
+    
+    if(Enemycntr>=30){
     if(Player1.position.x < Enemy.position.x - 100){
         Enemy.swichAnimation('Run');
         Enemy.position.x-=EnemySpeed;
@@ -391,6 +393,7 @@ function Anime(){
                 EnemyHealthBar-=10;
             }   
         }
+    }
     }
 
     Player1.CanMove.x=0;
