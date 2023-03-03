@@ -266,8 +266,8 @@ let EnemySpeed=5,ShouldiStop=false,EnemyDeath=false,PlayerDeath=false;
 let DefPlayerX=0,DefPlayerY=320,DefEnemyX,DefEnemyY,DeathFrames=0,PlayerStaminaBar=1,cntrStamina=0;
 let StaminaDelay=0;
 Enemy.Scale=0.5;
-const arr=[0.23,0.29];
-Player1.Scale=arr[1];
+Player1.Scale=0.23;
+const arr=[128,366];
 let EnemyDelay=0;
 
 
@@ -327,7 +327,7 @@ function EnemyDeathScene(){
     }
 }
 
-
+let test=40,testy=310;
 function Anime(){
     // Main Screen Reapeat
     if(!ShouldiStop)window.requestAnimationFrame(Anime);
@@ -342,9 +342,8 @@ function Anime(){
 
     // Draw our (Players/Enemies) everytime
     
-    if(!xP)Player1.Scale=arr[0];
-    else Player1.Scale=arr[0];
-    console.log(xP);
+    Player1.Animation['Attack'].image.height=test;
+    Player1.Animation['AttackLeft'].image.height=test;
     
     Player1.PlayerUpdate();
     Enemy.PlayerUpdate();
