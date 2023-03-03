@@ -28,7 +28,6 @@ class Assets{
         this.image=new Image();
         this.image.src=imageSrc;
     }
-
     imageDraw(){
         if(this.image)
             c.drawImage(this.image,this.position.x,this.position.y,canvas.width,canvas.height)
@@ -41,7 +40,7 @@ class Assets{
 
 // Player an others like (Enemy etc..) Class
 class Player{
-    constructor(a,b,FramesRate=9,imageSrc,animation){
+    constructor(a,b,FramesRate=9,imageSrc,animation,PlayerGraph=330,hitboxX=80,hitboxY=141){
         // position of x,y for each player
         this.position={
             x : a,
@@ -55,6 +54,9 @@ class Player{
         this.height;
         this.width;
         this.FramesRate=FramesRate;
+        this.PlayerGraph=PlayerGraph;
+        this.hitboxX=hitboxX;
+        this.hitboxY=hitboxY;
         
         this.Scale=0.5;
         this.image=new Image();
@@ -121,7 +123,7 @@ class Player{
         this.position.y+=this.CanMove.y;
 
         
-        if(this.position.y +  this.CanMove.y<(330 + canvas.height-576))this.CanMove.y+=Gravity;
+        if(this.position.y +  this.CanMove.y<(this.PlayerGraph + canvas.height-576))this.CanMove.y+=Gravity;
         else this.CanMove.y=0;
     }
 
@@ -132,8 +134,8 @@ class Player{
            of our GameScreen (right,left) not Monitor Screen
         */
         
-        if(this.position.x + this.hitBox.width + this.CanMove.x<=canvas.width-90 &&
-             this.position.x + this.hitBox.width + this.CanMove.x>=60)
+        if(this.position.x + this.hitBox.width + this.CanMove.x<=canvas.width &&
+             this.position.x + this.hitBox.width + this.CanMove.x>=120)
             this.position.x+=1.5*this.CanMove.x;
         else this.CanMove.x=0;
 
@@ -151,15 +153,13 @@ class Player{
         this.FrameUpdate();
         this.hitBox = {
             position:{
-                x : this.position.x+80 ,
-                y : this.position.y+135 
+                x : this.position.x+this.hitboxX ,
+                y : this.position.y+this.hitboxY 
             },
 
             width : 150,
             height : 115,
         }
-        // c.fillStyle='rgba(0,255,0,0.2)';
-        // c.fillRect(this.position.x,this.position.y,this.width,this.height);
 
         // c.fillStyle='rgba(255,0,0,0.2)';
         // c.fillRect(this.hitBox.position.x,this.hitBox.position.y,
@@ -172,53 +172,48 @@ class Player{
 };
 //Math.floor(Math.random() * (canvas.width-MainWidth)),canvas.height-Mainheight
 
-const Player1 = new Player(0,320,9,'images/idle/idle.png',{
+const Player1 = new Player(0,420,4,'images/Warrior/idle.png',{
     idle:{
-        imageSrc : 'images/idle/idle.png',
-        FrameRate : 9,
-        Delay : 15
+        imageSrc : 'images/Warrior/idle.png',
+        FrameRate : 4,
+        Delay : 25
     },
     idleLeft:{
-        imageSrc : 'images/idle/idleLeft.png',
-        FrameRate : 9,
-        Delay : 15
+        imageSrc : 'images/Warrior/idleLeft.png',
+        FrameRate : 4,
+        Delay : 25
     },
     Run:{
-        imageSrc : 'images/Movement/Run.png',
+        imageSrc : 'images/Warrior/Run.png',
         FrameRate : 6,
         Delay : 15
     },
     RunLeft:{
-        imageSrc : 'images/Movement/RunLeft.png',
+        imageSrc : 'images/Warrior/RunLeft.png',
         FrameRate : 6,
         Delay : 15
     },
     Attack:{
-        imageSrc : 'images/Attack/Attack.png',
-        FrameRate : 11.9,
-        Delay : 2
+        imageSrc : 'images/Warrior/Attack.png',
+        FrameRate : 6.9,
+        Delay : 10
     },
     AttackLeft:{
-        imageSrc : 'images/Attack/AttackLeft.png',
-        FrameRate : 12.06,
-        Delay : 2
+        imageSrc : 'images/Warrior/AttackLeft.png',
+        FrameRate : 7.1,
+        Delay : 10
     },
     Death:{
-        imageSrc : 'images/Death/Death.png',
-        FrameRate : 23,
-        Delay : 15
-    },
-    Hit:{
-        imageSrc : 'images/Hit/Hit.png',
-        FrameRate : 4.7,
-        Delay : 20
+        imageSrc : 'images/Warrior/Death.png',
+        FrameRate : 11,
+        Delay : 30
     },
     None:{
         imageSrc : 'images/None.png',
         FrameRate : 5,
         Delay : 2
     }
-});
+},430,-20,40);
 const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
     idle:{
         imageSrc : 'images/idle/idleLeft.png',
@@ -242,23 +237,18 @@ const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
     },
     Attack:{
         imageSrc : 'images/Attack/AttackLeft.png',
-        FrameRate : 11.9,
-        Delay : 2 
+        FrameRate : 12.08,
+        Delay : 10
     },
     AttackLeft:{
         imageSrc : 'images/Attack/Attack.png',
-        FrameRate : 12.06,
-        Delay : 2
+        FrameRate : 11.9,
+        Delay : 10
     },
     Death:{
         imageSrc : 'images/Death/Death.png',
         FrameRate : 23,
         Delay : 15
-    },
-    Hit:{
-        imageSrc : 'images/Hit/Hit.png',
-        FrameRate : 5,
-        Delay : 2
     },
     None:{
         imageSrc : 'images/None.png',
@@ -268,12 +258,19 @@ const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
 });
 const background = new Assets(0,0,'images/Background/Background3.png');
 
+
+
 let DamageCounter=0,Damage2Counter=0,AttackCounter=0,Attack2Counter=0,EnemyHealthBar=10,PlayerHealthBar=1;
 let EnemySpeed=5,ShouldiStop=false,EnemyDeath=false,PlayerDeath=false;
 
 let DefPlayerX=0,DefPlayerY=320,DefEnemyX,DefEnemyY,DeathFrames=0,PlayerStaminaBar=1,cntrStamina=0;
 let StaminaDelay=0;
 Enemy.Scale=0.5;
+const arr=[0.23,0.29];
+Player1.Scale=arr[1];
+let EnemyDelay=0;
+
+
 function DeathScene(){
     window.requestAnimationFrame(DeathScene);  
     background.imageUpdate();
@@ -288,7 +285,6 @@ function DeathScene(){
 
     if(ShouldiStop === false){
         Player1.swichAnimation('Death');
-        Player1.position.y=330;
     }
 
     if(Player1.position.x > Enemy.position.x)Enemy.swichAnimation('idleLeft');
@@ -297,7 +293,6 @@ function DeathScene(){
 
     if(DeathFrames>=220){
         Player1.swichAnimation('None');
-        Player1.position.y=320;
         Player1.CanMove.x=0;
         Player1.CanMove.y=0;
         ShouldiStop=true;
@@ -309,7 +304,6 @@ function EnemyDeathScene(){
     background.imageUpdate();
     Player1.PlayerUpdate();
     Enemy.PlayerUpdate();
-    Player1.position.y=330;
     Player1.CanMove.x=0;
     document.querySelector('#PlayerStaminaBar').style.width='0%';
     document.querySelector('.parent').style.opacity = '0.2';
@@ -324,7 +318,6 @@ function EnemyDeathScene(){
     if(Player1.position.x > Enemy.position.x)Player1.swichAnimation('idleLeft');
     else Player1.swichAnimation('idle');
     DeathFrames++;
-    // console.log(DeathFrames);
     if(DeathFrames>=220){
         Enemy.swichAnimation('None');
         Enemy.position.y=330;
@@ -333,7 +326,8 @@ function EnemyDeathScene(){
         ShouldiStop=true;
     }
 }
-let EnemyDelay=0
+
+
 function Anime(){
     // Main Screen Reapeat
     if(!ShouldiStop)window.requestAnimationFrame(Anime);
@@ -347,36 +341,37 @@ function Anime(){
     background.imageUpdate();
 
     // Draw our (Players/Enemies) everytime
+    
+    if(!xP)Player1.Scale=arr[0];
+    else Player1.Scale=arr[0];
+    console.log(xP);
+    
     Player1.PlayerUpdate();
     Enemy.PlayerUpdate();
     // Move enemy towards Our Player
     
     if(EnemyDelay>=120){
-        if(Player1.position.x < Enemy.position.x - 100){
+        if(Player1.position.x + 50 < Enemy.position.x ){
             Enemy.swichAnimation('Run');
             Enemy.position.x-=EnemySpeed;
             AttackCounter=0;
         }else{
-            if(Player1.position.x > Enemy.position.x + 100){
+            if(Player1.position.x  > Enemy.position.x + 230){
                 AttackCounter=0;
                 Enemy.swichAnimation('RunLeft');
                 Enemy.position.x+=EnemySpeed;
             }else{
-                Enemy.Animation['AttackLeft'].Delay=10;
-                Enemy.Animation['Attack'].Delay=10;
-                Enemy.Animation['AttackLeft'].FrameRate=11.9;
-                Enemy.Animation['Attack'].FrameRate=12.08;
                 Enemy.position.y=345;
                 if(Player1.CanMove.y === 0){   
-                    if(Player1.position.x <=Enemy.position.x)Enemy.swichAnimation('Attack');
+                    if(Player1.position.x  <= Enemy.position.x)Enemy.swichAnimation('Attack');
                     else Enemy.swichAnimation('AttackLeft');
                     AttackCounter++;
                     if(Player1.position.x+100 >= Enemy.position.x)DamageCounter+=(1/120);
                     
                 }else {
                     AttackCounter=0;
-                    if(Player1.position.x > Enemy.position.x)Enemy.swichAnimation('idleLeft');
-                    else Enemy.swichAnimation('idle');
+                    // if(Player1.position.x>= Enemy.position.x)Enemy.swichAnimation('idleLeft');
+                    // else Enemy.swichAnimation('idle');
                 }
 
                 if(DamageCounter>=0.8){
@@ -417,7 +412,8 @@ function Anime(){
         else {Player1.swichAnimation('idle');LastUpdated='idle';}
     }
     
-    if(xP){ 
+    if(xP){
+        Player1.Scale=arr[1];
         if(LastL){Player1.swichAnimation('AttackLeft');LastUpdated='AttackLeft';}
         else {Player1.swichAnimation('Attack');LastUpdated='Attack';}
         // xP=false;
@@ -439,7 +435,7 @@ function Anime(){
         }
         if(PlayerHealthBar >=101){
             PlayerHealthBar-=1;
-        }   
+        }
     }
     StaminaDelay++;
 
@@ -454,12 +450,14 @@ function Anime(){
             PlayerStaminaBar++;
             Player1.swichAnimation(LastUpdated);
             Player1.CanMove.x=-11;
+            Player1.swichAnimation('RunLeft');
         }
         else {
             document.querySelector('#PlayerStaminaBar').style.width = PlayerStaminaBar +'%';
             PlayerStaminaBar++;
             Player1.swichAnimation(LastUpdated);
             Player1.CanMove.x=11;
+            Player1.swichAnimation('Run');
         }
     }
 }
