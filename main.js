@@ -268,7 +268,7 @@ const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
 });
 const background = new Assets(0,0,'images/Background/Background3.png');
 
-let DamageCounter=0,Damage2Counter=0,AttackCounter=0,Attack2Counter=0,EnemyHealthBar=20,PlayerHealthBar=1;
+let DamageCounter=0,Damage2Counter=0,AttackCounter=0,Attack2Counter=0,EnemyHealthBar=8,PlayerHealthBar=1;
 let EnemySpeed=5,ShouldiStop=false,EnemyDeath=false,PlayerDeath=false;
 
 let DefPlayerX=0,DefPlayerY=320,DefEnemyX,DefEnemyY,DeathFrames=0,PlayerStaminaBar=1,cntrStamina=0;
@@ -279,6 +279,7 @@ function DeathScene(){
     background.imageUpdate();
     Player1.PlayerUpdate();
     Enemy.PlayerUpdate();
+    document.querySelector('#PlayerStaminaBar').style.width='0%';
     Player1.CanMove.x=0;
     Player1.CanMove.y=0;
     Player1.swichAnimation('Death');
@@ -308,6 +309,7 @@ function EnemyDeathScene(){
     Enemy.PlayerUpdate();
     Player1.position.y=330;
     Player1.CanMove.x=0;
+    document.querySelector('#PlayerStaminaBar').style.width='0%';
     
 
     if(ShouldiStop === false){
@@ -378,10 +380,10 @@ function Anime(){
                     DamageCounter=0;
                     AttackCounter=0;
                     document.querySelector('#PlayerHealthBar').style.width = EnemyHealthBar +'%';
-                    EnemyHealthBar +=10;
+                    EnemyHealthBar +=8;
                 }
                 // Player/Enemy  Dies
-                if(EnemyHealthBar >= 110){
+                if(EnemyHealthBar >= 108){
                     document.querySelector('#LoseScreen').style.display='block';
                     document.querySelector('#LoseScreenBTN').addEventListener("click",()=>{
                         location.reload();
@@ -389,8 +391,8 @@ function Anime(){
                     ShouldiStop=true;
                     PlayerDeath=true;
                 }
-                if(EnemyHealthBar >=110){
-                    EnemyHealthBar-=10;
+                if(EnemyHealthBar >=108){
+                    EnemyHealthBar-=8;
                 }   
             }
         }

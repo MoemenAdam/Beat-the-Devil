@@ -51,7 +51,7 @@
 .PlayerHealths{
     position: absolute;
     margin-top: 50px;
-    width:10%;
+    width:20%;
     height: 15px;
     background-color: red;
     border: 2px solid white;
