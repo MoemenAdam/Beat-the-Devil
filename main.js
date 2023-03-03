@@ -350,7 +350,7 @@ function Anime(){
     // Move enemy towards Our Player
     
     if(EnemyDelay>=120){
-        if(Player1.position.x + 50 < Enemy.position.x ){
+        if(Player1.position.x +10 < Enemy.position.x ){
             Enemy.swichAnimation('Run');
             Enemy.position.x-=EnemySpeed;
             AttackCounter=0;
@@ -362,7 +362,7 @@ function Anime(){
             }else{
                 Enemy.position.y=345;
                 if(Player1.CanMove.y === 0){   
-                    if(Player1.position.x  <= Enemy.position.x)Enemy.swichAnimation('Attack');
+                    if(Player1.position.x  -100 <= Enemy.position.x)Enemy.swichAnimation('Attack');
                     else Enemy.swichAnimation('AttackLeft');
                     AttackCounter++;
                     if(Player1.position.x+100 >= Enemy.position.x)DamageCounter+=(1/120);
