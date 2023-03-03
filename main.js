@@ -280,6 +280,8 @@ function DeathScene(){
     Player1.PlayerUpdate();
     Enemy.PlayerUpdate();
     document.querySelector('#PlayerStaminaBar').style.width='0%';
+    document.querySelector('.parent').style.opacity = '0.2';
+
     Player1.CanMove.x=0;
     Player1.CanMove.y=0;
     Player1.swichAnimation('Death');
@@ -310,6 +312,7 @@ function EnemyDeathScene(){
     Player1.position.y=330;
     Player1.CanMove.x=0;
     document.querySelector('#PlayerStaminaBar').style.width='0%';
+    document.querySelector('.parent').style.opacity = '0.2';
     
 
     if(ShouldiStop === false){
@@ -427,8 +430,8 @@ function Anime(){
         }
             // Player/Enemy  Dies
         if(PlayerHealthBar === 101){
-            document.querySelector('#LoseScreen').style.display='block';
-            document.querySelector('#LoseScreenBTN').addEventListener("click",()=>{
+            document.querySelector('#WinScreen').style.display='block';
+            document.querySelector('#WinScreenBTN').addEventListener("click",()=>{
                 location.reload();
             });
             ShouldiStop=true;
@@ -487,13 +490,6 @@ window.addEventListener("keydown",(e)=>{
             break;
     }
 });
-
-// window.addEventListener("keyup",(e)=>{
-//     if(e.key === 'x' || e.key === 'X' || e.key === 'ء' || e.key === ' ْ'){
-//         xP=true;
-//         xPressed=false;
-//     }
-// });
 
 window.addEventListener("keyup",(e)=>{
     switch(e.key){

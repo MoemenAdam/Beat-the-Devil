@@ -11,7 +11,25 @@
         <link rel="icon" href="Logo.jpg">
         <title>Beat The Devil</title>
     </head>
-    <body style="background-color: rgb(20, 20, 20);">
+    <body id="Body" style="background-color: rgb(20, 20, 20);">
+        <div id="LoseScreen">
+            <div class="Loseimage">
+                <p>You Died!</p>
+                <!-- <button id="LoseScreenBTN">Play Again</button> -->
+                <a href="#" id="LoseScreenBTN" class="button">Play Again</a>
+            </div>
+        </div>
+        <div id="WinScreen">
+            <div class="Winimage">
+                <p>You Won!</p>
+                <!-- <button id="WinScreenBTN">Play Again</button> -->
+                
+                <a href="#" id="WinScreenBTN" class="button">Play Again</a>
+            </div>
+        </div>
+        <div id="StartScreen">
+
+        </div>
         <div class="parent">
             <div class="TopContent">
                 <div id="GameName"></div>
@@ -27,11 +45,6 @@
             </div>
             <canvas id="GameScreen"></canvas>
         </div>
-        <div id="LoseScreen">   
-            <button id="LoseScreenBTN">Click</button>
-        </div>
-        <div id="WinScreen"></div>
-        <div id="StartScreen"></div>
         <!-- <button id="MainSong">Play</button> -->
         <script src="main.js"></script>
     </body>
