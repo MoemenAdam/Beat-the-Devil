@@ -44,6 +44,7 @@
     height: 100%;
     background-color: black;
     border-radius: 10px;
+    transition-duration: 0.5s ;
 }
 
 
@@ -63,6 +64,7 @@
     width: 0%;
     height: 100%;
     background-color: black;
+    transition-duration: 0.5s ;
     /* border-radius: 10px; */
 }
 
@@ -81,6 +83,8 @@
     width: 0%;
     height: 100%;
     background-color: black;
+    transition:ease-out;
+    transition-duration: 0.5s ;
     /* border-radius: 10px; */
 }
 

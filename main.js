@@ -271,8 +271,8 @@ const background = new Assets(0,0,'images/Background/Background3.png');
 let DamageCounter=0,Damage2Counter=0,AttackCounter=0,Attack2Counter=0,EnemyHealthBar=20,PlayerHealthBar=1;
 let EnemySpeed=5,ShouldiStop=false,EnemyDeath=false,PlayerDeath=false;
 
-let DefPlayerX=0,DefPlayerY=320,DefEnemyX,DefEnemyY,DeathFrames=0;
-
+let DefPlayerX=0,DefPlayerY=320,DefEnemyX,DefEnemyY,DeathFrames=0,PlayerStaminaBar=1,cntrStamina=0;
+let StaminaDelay=0;
 Enemy.Scale=0.5;
 function DeathScene(){
     window.requestAnimationFrame(DeathScene);  
@@ -328,7 +328,7 @@ function EnemyDeathScene(){
         ShouldiStop=true;
     }
 }
-let Enemycntr=0
+let EnemyDelay=0
 function Anime(){
     // Main Screen Reapeat
     if(!ShouldiStop)window.requestAnimationFrame(Anime);
@@ -337,7 +337,7 @@ function Anime(){
         if(PlayerDeath)DeathScene();
         else if(EnemyDeath)EnemyDeathScene();
     }
-    Enemycntr++;
+    EnemyDelay++;
     // Allways draw our Background top of other Characters and players  
     background.imageUpdate();
 
@@ -346,54 +346,54 @@ function Anime(){
     Enemy.PlayerUpdate();
     // Move enemy towards Our Player
     
-    if(Enemycntr>=120){
-    if(Player1.position.x < Enemy.position.x - 100){
-        Enemy.swichAnimation('Run');
-        Enemy.position.x-=EnemySpeed;
-        AttackCounter=0;
-    }else{
-        if(Player1.position.x > Enemy.position.x + 100){
+    if(EnemyDelay>=120){
+        if(Player1.position.x < Enemy.position.x - 100){
+            Enemy.swichAnimation('Run');
+            Enemy.position.x-=EnemySpeed;
             AttackCounter=0;
-            Enemy.swichAnimation('RunLeft');
-            Enemy.position.x+=EnemySpeed;
         }else{
-            Enemy.Animation['AttackLeft'].Delay=10;
-            Enemy.Animation['Attack'].Delay=10;
-            Enemy.Animation['AttackLeft'].FrameRate=11.9;
-            Enemy.Animation['Attack'].FrameRate=12.08;
-            Enemy.position.y=345;
-            if(Player1.CanMove.y === 0){   
-                if(Player1.position.x <=Enemy.position.x)Enemy.swichAnimation('Attack');
-                else Enemy.swichAnimation('AttackLeft');
-                AttackCounter++;
-                if(Player1.position.x+100 >= Enemy.position.x)DamageCounter+=(1/120);
-                
-            }else {
+            if(Player1.position.x > Enemy.position.x + 100){
                 AttackCounter=0;
-                if(Player1.position.x > Enemy.position.x)Enemy.swichAnimation('idleLeft');
-                else Enemy.swichAnimation('idle');
-            }
+                Enemy.swichAnimation('RunLeft');
+                Enemy.position.x+=EnemySpeed;
+            }else{
+                Enemy.Animation['AttackLeft'].Delay=10;
+                Enemy.Animation['Attack'].Delay=10;
+                Enemy.Animation['AttackLeft'].FrameRate=11.9;
+                Enemy.Animation['Attack'].FrameRate=12.08;
+                Enemy.position.y=345;
+                if(Player1.CanMove.y === 0){   
+                    if(Player1.position.x <=Enemy.position.x)Enemy.swichAnimation('Attack');
+                    else Enemy.swichAnimation('AttackLeft');
+                    AttackCounter++;
+                    if(Player1.position.x+100 >= Enemy.position.x)DamageCounter+=(1/120);
+                    
+                }else {
+                    AttackCounter=0;
+                    if(Player1.position.x > Enemy.position.x)Enemy.swichAnimation('idleLeft');
+                    else Enemy.swichAnimation('idle');
+                }
 
-            if(DamageCounter>=0.8){
-                DamageCounter=0;
-                AttackCounter=0;
-                document.querySelector('#PlayerHealthBar').style.width = EnemyHealthBar +'%';
-                EnemyHealthBar +=10;
+                if(DamageCounter>=0.8){
+                    DamageCounter=0;
+                    AttackCounter=0;
+                    document.querySelector('#PlayerHealthBar').style.width = EnemyHealthBar +'%';
+                    EnemyHealthBar +=10;
+                }
+                // Player/Enemy  Dies
+                if(EnemyHealthBar >= 110){
+                    document.querySelector('#LoseScreen').style.display='block';
+                    document.querySelector('#LoseScreenBTN').addEventListener("click",()=>{
+                        location.reload();
+                    });
+                    ShouldiStop=true;
+                    PlayerDeath=true;
+                }
+                if(EnemyHealthBar >=110){
+                    EnemyHealthBar-=10;
+                }   
             }
-            // Player/Enemy  Dies
-            if(EnemyHealthBar >= 110){
-                document.querySelector('#LoseScreen').style.display='block';
-                document.querySelector('#LoseScreenBTN').addEventListener("click",()=>{
-                    location.reload();
-                });
-                ShouldiStop=true;
-                PlayerDeath=true;
-            }
-            if(EnemyHealthBar >=110){
-                EnemyHealthBar-=10;
-            }   
         }
-    }
     }
 
     Player1.CanMove.x=0;
@@ -434,13 +434,23 @@ function Anime(){
         if(LastL){Player1.swichAnimation('idleLeft');LastUpdated='idleLeft';}
         else {Player1.swichAnimation('idle');LastUpdated='idle';}
     }
+    StaminaDelay++;
 
-    if(Dash){
+    if(StaminaDelay >=150){
+        document.querySelector('#PlayerStaminaBar').style.width='0%';
+        PlayerStaminaBar=1;
+    }
+    if(Dash && PlayerStaminaBar<=100){
+        StaminaDelay=0;
         if(LastL){
+            document.querySelector('#PlayerStaminaBar').style.width = PlayerStaminaBar +'%';
+            PlayerStaminaBar++;
             Player1.swichAnimation(LastUpdated);
             Player1.CanMove.x=-11;
         }
         else {
+            document.querySelector('#PlayerStaminaBar').style.width = PlayerStaminaBar +'%';
+            PlayerStaminaBar++;
             Player1.swichAnimation(LastUpdated);
             Player1.CanMove.x=11;
         }
