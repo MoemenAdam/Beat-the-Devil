@@ -34,7 +34,7 @@
     width: 40%;
     height: 15px;
     background-color: red;
-    border: 2px solid white;
+    border: 2px solid rgb(0, 0, 0);
     border-radius: 10px;
     direction: rtl;
 }
@@ -42,7 +42,7 @@
 #HealthBar{
     width: 0%;
     height: 100%;
-    background-color: black;
+    background-color: black;border: 2px solid rgb(0, 0, 0);
     border-radius: 10px;
     transition-duration: 0.5s ;
 }
@@ -54,7 +54,7 @@
     width:15%;
     height: 15px;
     background-color: red;
-    border: 2px solid white;
+    border: 2px solid rgb(0, 0, 0);
     /* border-radius: 10px; */
     direction: rtl;
 }
@@ -74,7 +74,7 @@
     width:10%;
     height: 15px;
     background-color: rgb(0, 146, 146);
-    border: 2px solid white;
+    border: 2px solid rgb(0, 0, 0);
     /* border-radius: 10px; */
     direction: rtl;
 }
