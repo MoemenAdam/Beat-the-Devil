@@ -268,7 +268,7 @@ const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
 });
 const background = new Assets(0,0,'images/Background/Background3.png');
 
-let DamageCounter=0,Damage2Counter=0,AttackCounter=0,Attack2Counter=0,EnemyHealthBar=8,PlayerHealthBar=1;
+let DamageCounter=0,Damage2Counter=0,AttackCounter=0,Attack2Counter=0,EnemyHealthBar=10,PlayerHealthBar=1;
 let EnemySpeed=5,ShouldiStop=false,EnemyDeath=false,PlayerDeath=false;
 
 let DefPlayerX=0,DefPlayerY=320,DefEnemyX,DefEnemyY,DeathFrames=0,PlayerStaminaBar=1,cntrStamina=0;
@@ -380,10 +380,10 @@ function Anime(){
                     DamageCounter=0;
                     AttackCounter=0;
                     document.querySelector('#PlayerHealthBar').style.width = EnemyHealthBar +'%';
-                    EnemyHealthBar +=8;
+                    EnemyHealthBar +=10;
                 }
                 // Player/Enemy  Dies
-                if(EnemyHealthBar >= 108){
+                if(EnemyHealthBar >= 110){
                     document.querySelector('#LoseScreen').style.display='block';
                     document.querySelector('#LoseScreenBTN').addEventListener("click",()=>{
                         location.reload();
@@ -391,8 +391,8 @@ function Anime(){
                     ShouldiStop=true;
                     PlayerDeath=true;
                 }
-                if(EnemyHealthBar >=108){
-                    EnemyHealthBar-=8;
+                if(EnemyHealthBar >=110){
+                    EnemyHealthBar-=10;
                 }   
             }
         }
@@ -400,6 +400,20 @@ function Anime(){
 
     Player1.CanMove.x=0;
     Enemy.CanMove.x=0;
+    if(LeftP){
+        Player1.swichAnimation('RunLeft');
+        Player1.CanMove.x=-5;
+        LastUpdated='RunLeft';
+    }
+    else if(RightP){
+        Player1.swichAnimation('Run');
+        Player1.CanMove.x=5;
+        LastUpdated='Run';
+    }else if(Player1.CanMove.y === 0){
+        if(LastL){Player1.swichAnimation('idleLeft');LastUpdated='idleLeft';}
+        else {Player1.swichAnimation('idle');LastUpdated='idle';}
+    }
+    
     if(xP){ 
         if(LastL){Player1.swichAnimation('AttackLeft');LastUpdated='AttackLeft';}
         else {Player1.swichAnimation('Attack');LastUpdated='Attack';}
@@ -423,18 +437,6 @@ function Anime(){
         if(PlayerHealthBar >=101){
             PlayerHealthBar-=1;
         }   
-    }else if(LeftP){
-        Player1.swichAnimation('RunLeft');
-        Player1.CanMove.x=-5;
-        LastUpdated='RunLeft';
-    }
-    else if(RightP){
-        Player1.swichAnimation('Run');
-        Player1.CanMove.x=5;
-        LastUpdated='Run';
-    }else if(Player1.CanMove.y === 0){
-        if(LastL){Player1.swichAnimation('idleLeft');LastUpdated='idleLeft';}
-        else {Player1.swichAnimation('idle');LastUpdated='idle';}
     }
     StaminaDelay++;
 
