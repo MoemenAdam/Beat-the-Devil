@@ -327,7 +327,7 @@ function EnemyDeathScene(){
     }
 }
 
-let test=40,testy=310;
+let test=35,testy=310;
 function Anime(){
     // Main Screen Reapeat
     if(!ShouldiStop)window.requestAnimationFrame(Anime);
@@ -417,7 +417,8 @@ function Anime(){
         else {Player1.swichAnimation('Attack');LastUpdated='Attack';}
         // xP=false;
         // Edit if Enemy Attacked
-        if(Player1.position.x <= Enemy.position.x+200  && Player1.position.x+180 >= Enemy.position.x  && Player1.CanMove.y===0)Damage2Counter+=(1/120);
+        if(Player1.position.x <= Enemy.position.x+150)if(Player1.position.x <= Enemy.position.x+150  && Player1.position.x+50 >= Enemy.position.x  && Player1.CanMove.y===0)Damage2Counter+=(1/120);
+        
         if(Damage2Counter>=0.1){
             Damage2Counter=0;
             document.querySelector('#HealthBar').style.width = PlayerHealthBar +'%';
