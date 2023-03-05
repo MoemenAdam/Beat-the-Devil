@@ -369,8 +369,8 @@ function Anime(){
                     
                 }else {
                     AttackCounter=0;
-                    // if(Player1.position.x>= Enemy.position.x)Enemy.swichAnimation('idleLeft');
-                    // else Enemy.swichAnimation('idle');
+                    if(Player1.position.x>= Enemy.position.x)Enemy.swichAnimation('idleLeft');
+                    else Enemy.swichAnimation('idle');
                 }
 
                 if(DamageCounter>=0.8){
