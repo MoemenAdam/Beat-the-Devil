@@ -181,7 +181,12 @@ class Player{
             }
             if(this.Frame === this.FramesRate-1 && !this.CurrentAnimation.isActive){
                 this.CurrentAnimation.onComplete();
-                if(EnemyDone){
+                if(Level >=2){
+                    this.image.src='images/None.png';
+                    document.querySelector('.parent').style.opacity='0.2';
+                    NextPhases=false;
+                }
+                else if(EnemyDone){
                     this.image.src='images/None.png';
                     document.querySelector('.parent').style.opacity='0.2';
                     document.querySelector('.DivelSpeach').style.display='block';
@@ -491,6 +496,7 @@ function DeathScene(){
 
     Player1.CanMove.x=0;
     Player1.CanMove.y=0;
+
     Player1.swichAnimation('Death');
 
     if(ShouldiStop === false){
@@ -518,7 +524,9 @@ function EnemyDeathScene(){
     document.querySelector('#PlayerStaminaBar').style.width='0%';
     document.querySelector('.parent').style.opacity = '0.2';
     
-
+    Player1.CanMove.x=0;
+    Player1.CanMove.y=0;
+    Player1.position.y=430;
 
     if(ShouldiStop === false){
         Enemy.swichAnimation('Death');
@@ -542,20 +550,9 @@ function EnemyDeathScene(){
 let test=35,testy=310;
 function Anime(){
     // Main Screen Reapeat
-    if(Level>=2 && EnemyDone){
-        console.log('Won');
-        document.querySelector('.DivelSpeach').style.display='none';
-        document.querySelector('#winScreen').style.display='block';
-        document.querySelector('#winScreenBTN').addEventListener("click",()=>{
-            location.reload();
-        });
-        ShouldiStop=true;
-        EnemyDeath=true;
-    }
     if(!ShouldiStop)window.requestAnimationFrame(Anime);
     else {
         ShouldiStop=false;
-        
         if(PlayerDeath)DeathScene();
         else if(EnemyDeath)EnemyDeathScene();
     }
@@ -570,12 +567,6 @@ function Anime(){
     if(NextPhases && Level <2){
         Portal.PlayerUpdate();
         if(Portal.position.x-Player1.position.x <=-60 && Portal.position.x-Player1.position.x>=-127 && Player1.CanMove.y==0){
-            // document.querySelector('#WinScreen').style.display='block';
-            // document.querySelector('#WinScreenBTN').addEventListener("click",()=>{
-            //     location.reload();
-            // });
-            // ShouldiStop=true;
-            // EnemyDeath=true;
             Player1.CanMove.x=0;
             document.querySelector('.DivelSpeach').style.display='none';
             NextPhases=false;
@@ -697,6 +688,16 @@ function Anime(){
             // EnemyDeath=true;
             if(!EnemyDone)Enemy.swichAnimation('Death');
             EnemyDone=true;
+            if(Level>=2){
+                console.log('Won');
+                document.querySelector('.DivelSpeach').style.display='none';
+                document.querySelector('#WinScreen').style.display='block';
+                        document.querySelector('#WinScreenBTN').addEventListener("click",()=>{
+                            location.reload();
+                        });
+                        ShouldiStop=true;
+                        EnemyDeath=true;
+            }
         }
         if(PlayerHealthBar >101){
             PlayerHealthBar-=1;
