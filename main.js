@@ -245,7 +245,6 @@ const Player1 = new Player(0,420,4,'images/Warrior/idle.png',{
         onComplete:() =>{
             cntr++;
             if(cntr%10==0){sound2.play();}
-            console.log(cntr);
         },
     },
     AttackLeft:{
