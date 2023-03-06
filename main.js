@@ -175,7 +175,7 @@ class Player{
                     this.image.src='images/None.png';
                     document.querySelector('.parent').style.opacity='0.2';
                     document.querySelector('.DivelSpeach').style.display='block';
-                    document.querySelector('.DivelSpeach').innerHTML = '<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=1000&pause=1500&color=F7F7F7&width=1000&lines=Good+job+by+killing+the+Devil+Personal+guard;Now+Enter+The+Portal+to+Fight+the+Deivl+.+.+.+.+.+.+."/>';
+                    document.querySelector('.DivelSpeach').innerHTML = '<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=1000&pause=1500&color=F7F7F7&width=1000&lines=Good+job+by+killing+the+Devil+Personal+guard;Now+Enter+The+Portal+to+Fight+the+Devil+.+.+.+.+.+.+."/>';
                     NextPhases=true;
                 }
                 this.CurrentAnimation.isActive=true;
@@ -289,10 +289,7 @@ const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
         FrameRate : 23,
         Delay : 15,
         onComplete:() =>{
-            console.log('Done');
-            gsap.to(overlay,{
-                opacity:1
-            });
+
         },
     },
     None:{
@@ -398,11 +395,7 @@ function EnemyDeathScene(){
         Enemy.CanMove.y=0;
         ShouldiStop=true;
     }
-    c.save();
-    c.globalAlpha = overlay.opacity;
-    c.fillstyle='black';
-    c.fillRect(0,0,canvas.width,canvas.height);
-    c.restore();
+    
 }
 
 let test=35,testy=310;
@@ -427,13 +420,16 @@ function Anime(){
     if(NextPhases){
         Portal.PlayerUpdate();
         if(Portal.position.x-Player1.position.x <=-60 && Portal.position.x-Player1.position.x>=-127){
-            document.querySelector('#WinScreen').style.display='block';
-            document.querySelector('#WinScreenBTN').addEventListener("click",()=>{
-                location.reload();
-            });
-            ShouldiStop=true;
-            EnemyDeath=true;
+            // document.querySelector('#WinScreen').style.display='block';
+            // document.querySelector('#WinScreenBTN').addEventListener("click",()=>{
+            //     location.reload();
+            // });
+            // ShouldiStop=true;
+            // EnemyDeath=true;
             document.querySelector('.DivelSpeach').style.display='none';
+            gsap.to(overlay,{
+                opacity:1
+            });
         }
     }
     Player1.PlayerUpdate();
@@ -552,6 +548,13 @@ function Anime(){
             Player1.swichAnimation('Run');
         }
     }
+
+
+    c.save();
+    c.globalAlpha = overlay.opacity;
+    c.fillstyle='black';
+    c.fillRect(0,0,canvas.width,canvas.height);
+    c.restore();
 }
 Anime();
 window.addEventListener("keydown",(e)=>{
