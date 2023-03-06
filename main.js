@@ -189,8 +189,6 @@ class Player{
                 else if(EnemyDone){
                     this.image.src='images/None.png';
                     document.querySelector('.parent').style.opacity='0.2';
-                    document.querySelector('.DivelSpeach').style.display='block';
-                    document.querySelector('.DivelSpeach').innerHTML = '<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=3000&pause=500&color=F7F7F7&width=1000&lines=uhh+You+Got+Me+.+.+.+.+.+.+.;My+Lord+Is+not+Weak+like+Me;After+all+he+is+the+Devil+and+iam+his+Servant;"/>';
                     NextPhases=true;
                 }
                 this.CurrentAnimation.isActive=true;
