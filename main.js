@@ -4,15 +4,18 @@
 let play = document.getElementById("MusicBTN");
 function playMusic(){
     var sound = new Howl({
-        urls: ['Music/Song.mp3']
+        urls: ['Music/Song2.mp3'],
+        loop :true,
+        volume : 0.01,
     }).play();
 }
 play.addEventListener("click",playMusic);
 
-// var sound2 = new Howl({
-//     urls: ['Music/AttackSound2.mp3']
-// });
-
+var sound2 = new Howl({
+    urls: ['Music/AttackSound2.mp3'],
+    autoplay : false,
+    volume : 0.1,
+});
 // Music End
 
 let canvas = document.getElementById('GameScreen');
@@ -28,7 +31,7 @@ let xPressed=false;
 let LeftP=false,RightP=false,xP=false,Dash=false;
 let LastL=false,LastUpdated='idle';
 let EnemyDone=false;
-let NextPhases=false;
+let NextPhases=false,cntr=0;
 /* Main varaiables */
 
 // Background Calss 
@@ -169,13 +172,16 @@ class Player{
         }
 
         if(this.CurrentAnimation?.onComplete){
+            if(this.Frame === this.FramesRate-0.9 || this.Frame === this.FramesRate-0.1){
+                this.CurrentAnimation.onComplete()
+            }
             if(this.Frame === this.FramesRate-1 && !this.CurrentAnimation.isActive){
                 this.CurrentAnimation.onComplete();
                 if(EnemyDone){
                     this.image.src='images/None.png';
                     document.querySelector('.parent').style.opacity='0.2';
                     document.querySelector('.DivelSpeach').style.display='block';
-                    document.querySelector('.DivelSpeach').innerHTML = '<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=1000&pause=1500&color=F7F7F7&width=1000&lines=Good+job+by+killing+the+Devil+Personal+guard;Now+Enter+The+Portal+to+Fight+the+Devil+.+.+.+.+.+.+."/>';
+                    document.querySelector('.DivelSpeach').innerHTML = '<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=3000&pause=500&color=F7F7F7&width=1000&lines=uhh+You+Got+Me+.+.+.+.+.+.+.;My+Lord+Is+not+Weak+like+Me;After+all+he+is+the+Devil+and+iam+his+Servant;"/>';
                     NextPhases=true;
                 }
                 this.CurrentAnimation.isActive=true;
@@ -235,12 +241,21 @@ const Player1 = new Player(0,420,4,'images/Warrior/idle.png',{
     Attack:{
         imageSrc : 'images/Warrior/Attack.png',
         FrameRate : 6.9,
-        Delay : 10
+        Delay : 10,
+        onComplete:() =>{
+            cntr++;
+            if(cntr%10==0){sound2.play();}
+            console.log(cntr);
+        },
     },
     AttackLeft:{
         imageSrc : 'images/Warrior/AttackLeft.png',
         FrameRate : 7.1,
-        Delay : 10
+        Delay : 10,
+        onComplete:() =>{
+            cntr++;
+            if(cntr%10==0){sound2.play();}
+        },
     },
     Death:{
         imageSrc : 'images/Warrior/Death.png',
@@ -289,7 +304,7 @@ const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
         FrameRate : 23,
         Delay : 15,
         onComplete:() =>{
-
+            
         },
     },
     None:{
@@ -419,13 +434,14 @@ function Anime(){
     
     if(NextPhases){
         Portal.PlayerUpdate();
-        if(Portal.position.x-Player1.position.x <=-60 && Portal.position.x-Player1.position.x>=-127){
+        if(Portal.position.x-Player1.position.x <=-60 && Portal.position.x-Player1.position.x>=-127 && Player1.CanMove.y==0){
             // document.querySelector('#WinScreen').style.display='block';
             // document.querySelector('#WinScreenBTN').addEventListener("click",()=>{
             //     location.reload();
             // });
             // ShouldiStop=true;
             // EnemyDeath=true;
+            Player1.CanMove.x=0;
             document.querySelector('.DivelSpeach').style.display='none';
             gsap.to(overlay,{
                 opacity:1
@@ -582,7 +598,6 @@ window.addEventListener("keydown",(e)=>{
             xPressed=true;
             break;
     }
-    // if(xP)sound2.play();
 });
 
 window.addEventListener("keyup",(e)=>{
