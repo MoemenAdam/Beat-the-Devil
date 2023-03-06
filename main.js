@@ -4,18 +4,33 @@
 var sound = new Howl({
     urls: ['Music/Song2.mp3'],
     loop :true,
-    volume : 0.01,
+    volume : 0.1,
 });
 
-var sound2 = new Howl({
+var attackSound = new Howl({
     urls: ['Music/AttackSound2.mp3'],
+    autoplay : false,
+    volume : 0.05,
+});
+
+
+var hitSound = new Howl({
+    urls: ['Music/hit.mp3'],
     autoplay : false,
     volume : 0.1,
 });
 
-var sound3 = new Howl({
-    urls: ['Music/hit.mp3'],
+var WinSound = new Howl({
+    urls: ['Music/Win.mp3'],
     autoplay : false,
+    loop :false,
+    volume : 0.1,
+});
+
+var DeathSound = new Howl({
+    urls: ['Music/Death.mp3'],
+    autoplay : false,
+    loop :false,
     volume : 0.1,
 });
 // Music End
@@ -329,7 +344,7 @@ let Levels ={
                     Delay : 10,
                     onComplete:() =>{
                         cntr++;
-                        if(cntr%10==0){sound2.play();}
+                        if(cntr%10==0){attackSound.play();}
                     },
                 },
                 AttackLeft:{
@@ -338,7 +353,7 @@ let Levels ={
                     Delay : 10,
                     onComplete:() =>{
                         cntr++;
-                        if(cntr%10==0){sound2.play();}
+                        if(cntr%10==0){attackSound.play();}
                     },
                 },
                 Death:{
@@ -441,7 +456,7 @@ let Levels ={
                     Delay : 10,
                     onComplete:() =>{
                         cntr++;
-                        if(cntr%10==0){sound2.play();}
+                        if(cntr%10==0){attackSound.play();}
                     },
                 },
                 AttackLeft:{
@@ -450,7 +465,7 @@ let Levels ={
                     Delay : 10,
                     onComplete:() =>{
                         cntr++;
-                        if(cntr%10==0){sound2.play();}
+                        if(cntr%10==0){attackSound.play();}
                     },
                 },
                 Death:{
@@ -481,7 +496,6 @@ Player1.Scale=0.23;
 const arr=[128,366];
 let EnemyDelay=0;
 
-
 function DeathScene(){
     window.requestAnimationFrame(DeathScene);  
     background.imageUpdate();
@@ -491,6 +505,8 @@ function DeathScene(){
     document.querySelector('.parent').style.opacity = '0.2';
 
     
+    sound.stop();
+    if(DeathFrames === 0)DeathSound.play();
 
     Player1.CanMove.x=0;
     Player1.CanMove.y=0;
@@ -520,6 +536,10 @@ function EnemyDeathScene(){
     Enemy.PlayerUpdate();
     Player1.CanMove.x=0;
     document.querySelector('#PlayerStaminaBar').style.width='0%';
+    if(Level==2){
+        sound.stop();
+        if(DeathFrames === 0)WinSound.play();
+    }
     document.querySelector('.parent').style.opacity = '0.2';
     
     Player1.CanMove.x=0;
@@ -630,7 +650,7 @@ function Anime(){
                         AttackCounter=0;
                         document.querySelector('#PlayerHealthBar').style.width = EnemyHealthBar +'%';
                         EnemyHealthBar +=10;
-                        sound3.play();
+                        hitSound.play();
                     }
                     // Player  Dies
                     if(EnemyHealthBar >= 110){
