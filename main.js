@@ -27,8 +27,8 @@ let MainWidth = 55,Mainheight = 100;
 let xPressed=false;
 let LeftP=false,RightP=false,xP=false,Dash=false;
 let LastL=false,LastUpdated='idle';
-let isActive=false;
 let EnemyDone=false;
+let NextPhases=false;
 /* Main varaiables */
 
 // Background Calss 
@@ -98,14 +98,13 @@ class Player{
         this.loop=true;
     }
     swichAnimation(key){
-        if(EnemyDone)return;
         if(this.image === this.Animation[key].image)return;
 
         this.image = this.Animation[key].image;
         this.Delay = this.Animation[key].Delay;
         this.FramesRate = this.Animation[key].FrameRate;
         this.CurrentAnimation = this.Animation[key];
-        if(key === 'Death')this.loop=false;
+        if(key === 'Death' || key === 'start' || key === 'end')this.loop=false;
     }
 
 
@@ -170,13 +169,16 @@ class Player{
         }
 
         if(this.CurrentAnimation?.onComplete){
-            if(this.Frame === this.FramesRate-1 && !isActive){
+            if(this.Frame === this.FramesRate-1 && !this.CurrentAnimation.isActive){
                 this.CurrentAnimation.onComplete();
-                this.image.src='images/None.png';
-                document.querySelector('.parent').style.opacity='0.2';
-                document.querySelector('.DivelSpeach').style.display='block';
-                document.querySelector('.DivelSpeach').innerHTML = '<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=1000&pause=2000&color=F7F7F7&width=1000&lines=Will+Done;Good+job+by+killing+the+Devil+Personal+guard;Now+Enter+The+Portal+to+Fight+the+Deivl+by+Pressing+Enter+at+the+Portal"/>';
-                isActive=true;
+                if(EnemyDone){
+                    this.image.src='images/None.png';
+                    document.querySelector('.parent').style.opacity='0.2';
+                    document.querySelector('.DivelSpeach').style.display='block';
+                    document.querySelector('.DivelSpeach').innerHTML = '<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=1000&pause=1500&color=F7F7F7&width=1000&lines=Good+job+by+killing+the+Devil+Personal+guard;Now+Enter+The+Portal+to+Fight+the+Deivl+.+.+.+.+.+.+."/>';
+                    NextPhases=true;
+                }
+                this.CurrentAnimation.isActive=true;
             }
         }
     }
@@ -299,6 +301,36 @@ const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
         Delay : 1
     }
 });
+
+const Portal = new Player(1160,320,8,'images/Portalidle.png',{
+    idle:{
+        imageSrc : 'images/Portalidle.png',
+        FrameRate : 8,
+        Delay : 15
+    },
+    start:{
+        imageSrc : 'images/Portalstart.png',
+        FrameRate : 8,
+        Delay : 15,
+        onComplete:() =>{
+            
+        },
+    },
+    end:{
+        imageSrc : 'images/Portalend.png',
+        FrameRate : 8,
+        Delay : 15,
+        loop:false,
+        onComplete:() =>{
+            
+        },
+    },
+    None:{
+        imageSrc : 'images/None.png',
+        FrameRate : 1,
+        Delay : 1
+    }
+});
 const background = new Assets(0,0,'images/Background/Background3.png');
 
 
@@ -398,6 +430,18 @@ function Anime(){
     Player1.Animation['Attack'].image.height=test;
     Player1.Animation['AttackLeft'].image.height=test;
     
+    if(NextPhases){
+        Portal.PlayerUpdate();
+        if(Portal.position.x-Player1.position.x <=-60 && Portal.position.x-Player1.position.x>=-127){
+            document.querySelector('#WinScreen').style.display='block';
+            document.querySelector('#WinScreenBTN').addEventListener("click",()=>{
+                location.reload();
+            });
+            ShouldiStop=true;
+            EnemyDeath=true;
+            document.querySelector('.DivelSpeach').style.display='none';
+        }
+    }
     Player1.PlayerUpdate();
     Enemy.PlayerUpdate();
     // Move enemy towards Our Player
@@ -478,23 +522,21 @@ function Anime(){
             PlayerHealthBar +=1;
         }
         // Enemy Dies
-        if(PlayerHealthBar === 101 && !EnemyDone){
+        if(PlayerHealthBar === 101){
             // document.querySelector('#WinScreen').style.display='block';
             // document.querySelector('#WinScreenBTN').addEventListener("click",()=>{
             //     location.reload();
             // });
             // ShouldiStop=true;
             // EnemyDeath=true;
-            Enemy.swichAnimation('Death');
+            if(!EnemyDone)Enemy.swichAnimation('Death');
             EnemyDone=true;
-            xP=false;
         }
         if(PlayerHealthBar >101){
             PlayerHealthBar-=1;
         }
     }
     StaminaDelay++;
-
     if(StaminaDelay >=150){
         document.querySelector('#PlayerStaminaBar').style.width='0%';
         PlayerStaminaBar=1;
