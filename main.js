@@ -1,15 +1,11 @@
 'use strict';
 // Music Start
 
-let play = document.getElementById("MusicBTN");
-function playMusic(){
-    var sound = new Howl({
-        urls: ['Music/Song2.mp3'],
-        loop :true,
-        volume : 0.01,
-    }).play();
-}
-play.addEventListener("click",playMusic);
+var sound = new Howl({
+    urls: ['Music/Song2.mp3'],
+    loop :true,
+    volume : 0.01,
+});
 
 var sound2 = new Howl({
     urls: ['Music/AttackSound2.mp3'],
@@ -39,6 +35,8 @@ let LastL=false,LastUpdated='idle';
 let EnemyDone=false;
 let NextPhases=false,cntr=0;
 /* Main varaiables */
+
+
 
 // Background Calss 
 class Assets{
@@ -223,129 +221,252 @@ const overlay = {
 }
 
 
-const Player1 = new Player(0,420,4,'images/Warrior/idle.png',{
-    idle:{
-        imageSrc : 'images/Warrior/idle.png',
-        FrameRate : 4,
-        Delay : 25
+let Player1;
+let Enemy;
+let Portal;
+let background;
+
+let Level = 1;
+let Levels ={
+    1:{
+        init:()=>{
+            background = new Assets(0,0,'images/Background/Background3.png');
+            Portal = new Player(1160,320,8,'images/Portalidle.png',{
+                idle:{
+                    imageSrc : 'images/Portalidle.png',
+                    FrameRate : 8,
+                    Delay : 15
+                },
+                start:{
+                    imageSrc : 'images/Portalstart.png',
+                    FrameRate : 8,
+                    Delay : 15,
+                },
+                end:{
+                    imageSrc : 'images/Portalend.png',
+                    FrameRate : 8,
+                    Delay : 15,
+                    loop:false,
+                },
+                None:{
+                    imageSrc : 'images/None.png',
+                    FrameRate : 1,
+                    Delay : 1
+                }
+            });
+            Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
+                idle:{
+                    imageSrc : 'images/idle/idleLeft.png',
+                    FrameRate : 9,
+                    Delay : 15
+                },
+                idleLeft:{
+                    imageSrc : 'images/idle/idle.png',
+                    FrameRate : 9,
+                    Delay : 15
+                },
+                Run:{
+                    imageSrc : 'images/Movement/RunLeft.png',
+                    FrameRate : 6,
+                    Delay : 15
+                },
+                RunLeft:{
+                    imageSrc : 'images/Movement/Run.png',
+                    FrameRate : 6,
+                    Delay : 15
+                },
+                Attack:{
+                    imageSrc : 'images/Attack/AttackLeft.png',
+                    FrameRate : 12.08,
+                    Delay : 10
+                },
+                AttackLeft:{
+                    imageSrc : 'images/Attack/Attack.png',
+                    FrameRate : 11.9,
+                    Delay : 10
+                },
+                Death:{
+                    imageSrc : 'images/Death/Death.png',
+                    FrameRate : 23,
+                    Delay : 15,
+                    onComplete:() =>{
+                        
+                    },
+                },
+                None:{
+                    imageSrc : 'images/None.png',
+                    FrameRate : 1,
+                    Delay : 1
+                }
+            });
+            Player1 = new Player(0,420,4,'images/Warrior/idle.png',{
+                idle:{
+                    imageSrc : 'images/Warrior/idle.png',
+                    FrameRate : 4,
+                    Delay : 25
+                },
+                idleLeft:{
+                    imageSrc : 'images/Warrior/idleLeft.png',
+                    FrameRate : 4,
+                    Delay : 25
+                },
+                Run:{
+                    imageSrc : 'images/Warrior/Run.png',
+                    FrameRate : 6,
+                    Delay : 15
+                },
+                RunLeft:{
+                    imageSrc : 'images/Warrior/RunLeft.png',
+                    FrameRate : 6,
+                    Delay : 15
+                },
+                Attack:{
+                    imageSrc : 'images/Warrior/Attack.png',
+                    FrameRate : 6.9,
+                    Delay : 10,
+                    onComplete:() =>{
+                        cntr++;
+                        if(cntr%10==0){sound2.play();}
+                    },
+                },
+                AttackLeft:{
+                    imageSrc : 'images/Warrior/AttackLeft.png',
+                    FrameRate : 7.1,
+                    Delay : 10,
+                    onComplete:() =>{
+                        cntr++;
+                        if(cntr%10==0){sound2.play();}
+                    },
+                },
+                Death:{
+                    imageSrc : 'images/Warrior/Death.png',
+                    FrameRate : 11,
+                    Delay : 30
+                },
+                None:{
+                    imageSrc : 'images/None.png',
+                    FrameRate : 5,
+                    Delay : 2
+                }
+            },430,-20,40);
+        }
     },
-    idleLeft:{
-        imageSrc : 'images/Warrior/idleLeft.png',
-        FrameRate : 4,
-        Delay : 25
-    },
-    Run:{
-        imageSrc : 'images/Warrior/Run.png',
-        FrameRate : 6,
-        Delay : 15
-    },
-    RunLeft:{
-        imageSrc : 'images/Warrior/RunLeft.png',
-        FrameRate : 6,
-        Delay : 15
-    },
-    Attack:{
-        imageSrc : 'images/Warrior/Attack.png',
-        FrameRate : 6.9,
-        Delay : 10,
-        onComplete:() =>{
-            cntr++;
-            if(cntr%10==0){sound2.play();}
-        },
-    },
-    AttackLeft:{
-        imageSrc : 'images/Warrior/AttackLeft.png',
-        FrameRate : 7.1,
-        Delay : 10,
-        onComplete:() =>{
-            cntr++;
-            if(cntr%10==0){sound2.play();}
-        },
-    },
-    Death:{
-        imageSrc : 'images/Warrior/Death.png',
-        FrameRate : 11,
-        Delay : 30
-    },
-    None:{
-        imageSrc : 'images/None.png',
-        FrameRate : 5,
-        Delay : 2
+    2:{
+        init:()=>{
+            background = new Assets(0,0,'images/Background/Background2.png');
+            Portal = new Player(1160,320,8,'images/Portalidle.png',{
+                idle:{
+                    imageSrc : 'images/Portalidle.png',
+                    FrameRate : 8,
+                    Delay : 15
+                },
+                None:{
+                    imageSrc : 'images/None.png',
+                    FrameRate : 1,
+                    Delay : 1
+                }
+            });
+            Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
+                idle:{
+                    imageSrc : 'images/idle/idleLeft.png',
+                    FrameRate : 9,
+                    Delay : 15
+                },
+                idleLeft:{
+                    imageSrc : 'images/idle/idle.png',
+                    FrameRate : 9,
+                    Delay : 15
+                },
+                Run:{
+                    imageSrc : 'images/Movement/RunLeft.png',
+                    FrameRate : 6,
+                    Delay : 15
+                },
+                RunLeft:{
+                    imageSrc : 'images/Movement/Run.png',
+                    FrameRate : 6,
+                    Delay : 15
+                },
+                Attack:{
+                    imageSrc : 'images/Attack/AttackLeft.png',
+                    FrameRate : 12.08,
+                    Delay : 10
+                },
+                AttackLeft:{
+                    imageSrc : 'images/Attack/Attack.png',
+                    FrameRate : 11.9,
+                    Delay : 10
+                },
+                Death:{
+                    imageSrc : 'images/Death/Death.png',
+                    FrameRate : 23,
+                    Delay : 15,
+                    onComplete:() =>{
+                        
+                    },
+                },
+                None:{
+                    imageSrc : 'images/None.png',
+                    FrameRate : 1,
+                    Delay : 1
+                }
+            });
+            Player1 = new Player(0,420,4,'images/Warrior/idle.png',{
+                idle:{
+                    imageSrc : 'images/Warrior/idle.png',
+                    FrameRate : 4,
+                    Delay : 25
+                },
+                idleLeft:{
+                    imageSrc : 'images/Warrior/idleLeft.png',
+                    FrameRate : 4,
+                    Delay : 25
+                },
+                Run:{
+                    imageSrc : 'images/Warrior/Run.png',
+                    FrameRate : 6,
+                    Delay : 15
+                },
+                RunLeft:{
+                    imageSrc : 'images/Warrior/RunLeft.png',
+                    FrameRate : 6,
+                    Delay : 15
+                },
+                Attack:{
+                    imageSrc : 'images/Warrior/Attack.png',
+                    FrameRate : 6.9,
+                    Delay : 10,
+                    onComplete:() =>{
+                        cntr++;
+                        if(cntr%10==0){sound2.play();}
+                    },
+                },
+                AttackLeft:{
+                    imageSrc : 'images/Warrior/AttackLeft.png',
+                    FrameRate : 7.1,
+                    Delay : 10,
+                    onComplete:() =>{
+                        cntr++;
+                        if(cntr%10==0){sound2.play();}
+                    },
+                },
+                Death:{
+                    imageSrc : 'images/Warrior/Death.png',
+                    FrameRate : 11,
+                    Delay : 30
+                },
+                None:{
+                    imageSrc : 'images/None.png',
+                    FrameRate : 5,
+                    Delay : 2
+                }
+            },430,-20,40);
+        }
     }
-},430,-20,40);
-const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
-    idle:{
-        imageSrc : 'images/idle/idleLeft.png',
-        FrameRate : 9,
-        Delay : 15
-    },
-    idleLeft:{
-        imageSrc : 'images/idle/idle.png',
-        FrameRate : 9,
-        Delay : 15
-    },
-    Run:{
-        imageSrc : 'images/Movement/RunLeft.png',
-        FrameRate : 6,
-        Delay : 15
-    },
-    RunLeft:{
-        imageSrc : 'images/Movement/Run.png',
-        FrameRate : 6,
-        Delay : 15
-    },
-    Attack:{
-        imageSrc : 'images/Attack/AttackLeft.png',
-        FrameRate : 12.08,
-        Delay : 10
-    },
-    AttackLeft:{
-        imageSrc : 'images/Attack/Attack.png',
-        FrameRate : 11.9,
-        Delay : 10
-    },
-    Death:{
-        imageSrc : 'images/Death/Death.png',
-        FrameRate : 23,
-        Delay : 15,
-        onComplete:() =>{
-            
-        },
-    },
-    None:{
-        imageSrc : 'images/None.png',
-        FrameRate : 1,
-        Delay : 1
-    }
-});
-
-const Portal = new Player(1160,320,8,'images/Portalidle.png',{
-    idle:{
-        imageSrc : 'images/Portalidle.png',
-        FrameRate : 8,
-        Delay : 15
-    },
-    start:{
-        imageSrc : 'images/Portalstart.png',
-        FrameRate : 8,
-        Delay : 15,
-    },
-    end:{
-        imageSrc : 'images/Portalend.png',
-        FrameRate : 8,
-        Delay : 15,
-        loop:false,
-    },
-    None:{
-        imageSrc : 'images/None.png',
-        FrameRate : 1,
-        Delay : 1
-    }
-});
-const background = new Assets(0,0,'images/Background/Background3.png');
+};
 
 
-
+Levels[Level].init();
 
 let DamageCounter=0,Damage2Counter=0,AttackCounter=0,Attack2Counter=0,EnemyHealthBar=10,PlayerHealthBar=1;
 let EnemySpeed=5,ShouldiStop=false,EnemyDeath=false,PlayerDeath=false;
@@ -421,6 +542,16 @@ function EnemyDeathScene(){
 let test=35,testy=310;
 function Anime(){
     // Main Screen Reapeat
+    if(Level>=2 && EnemyDone){
+        console.log('Won');
+        document.querySelector('.DivelSpeach').style.display='none';
+        document.querySelector('#winScreen').style.display='block';
+        document.querySelector('#winScreenBTN').addEventListener("click",()=>{
+            location.reload();
+        });
+        ShouldiStop=true;
+        EnemyDeath=true;
+    }
     if(!ShouldiStop)window.requestAnimationFrame(Anime);
     else {
         ShouldiStop=false;
@@ -436,8 +567,7 @@ function Anime(){
     
     Player1.Animation['Attack'].image.height=test;
     Player1.Animation['AttackLeft'].image.height=test;
-    
-    if(NextPhases){
+    if(NextPhases && Level <2){
         Portal.PlayerUpdate();
         if(Portal.position.x-Player1.position.x <=-60 && Portal.position.x-Player1.position.x>=-127 && Player1.CanMove.y==0){
             // document.querySelector('#WinScreen').style.display='block';
@@ -448,11 +578,34 @@ function Anime(){
             // EnemyDeath=true;
             Player1.CanMove.x=0;
             document.querySelector('.DivelSpeach').style.display='none';
+            NextPhases=false;
             gsap.to(overlay,{
-                opacity:1
+                opacity:1,
+                onComplete: ()=>{
+                    Level++;
+                    Levels[Level].init();
+                    Player1.Scale=0.23;
+                    gsap.to(overlay,{
+                        opacity:0,
+                    })
+                    sound.play();
+                }
             });
+            EnemyDone=false;
+            EnemyHealthBar=0;
+            document.querySelector('#PlayerHealthBar').style.width='0%';
+            document.querySelector('#HealthBar').style.width ='0%';
+            document.querySelector('.parent').style.opacity='1';
+            DamageCounter=0;Damage2Counter=0;AttackCounter=0;Attack2Counter=0;EnemyHealthBar=10;PlayerHealthBar=1;
+            EnemySpeed=5;ShouldiStop=false;EnemyDeath=false;PlayerDeath=false;
+            DefPlayerX=0,DefPlayerY=320,DefEnemyX,DefEnemyY,DeathFrames=0,PlayerStaminaBar=1,cntrStamina=0;
+            StaminaDelay=0;
+            Enemy.Scale=0.5;
+            Player1.Scale=0.23;
+            EnemyDelay=0;
         }
     }
+    
     Player1.PlayerUpdate();
     Enemy.PlayerUpdate();
     // Move enemy towards Our Player
@@ -580,6 +733,8 @@ function Anime(){
     c.restore();
 }
 Anime();
+
+
 window.addEventListener("keydown",(e)=>{
     switch(e.key){
         case 'ArrowLeft':
