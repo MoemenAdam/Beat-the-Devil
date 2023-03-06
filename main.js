@@ -16,6 +16,12 @@ var sound2 = new Howl({
     autoplay : false,
     volume : 0.1,
 });
+
+var sound3 = new Howl({
+    urls: ['Music/hit.mp3'],
+    autoplay : false,
+    volume : 0.1,
+});
 // Music End
 
 let canvas = document.getElementById('GameScreen');
@@ -480,6 +486,7 @@ function Anime(){
                         AttackCounter=0;
                         document.querySelector('#PlayerHealthBar').style.width = EnemyHealthBar +'%';
                         EnemyHealthBar +=10;
+                        sound3.play();
                     }
                     // Player  Dies
                     if(EnemyHealthBar >= 110){
@@ -525,6 +532,7 @@ function Anime(){
             Damage2Counter=0;
             document.querySelector('#HealthBar').style.width = PlayerHealthBar +'%';
             PlayerHealthBar +=1;
+
         }
         // Enemy Dies
         if(PlayerHealthBar === 101){
