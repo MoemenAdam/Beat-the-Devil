@@ -121,3 +121,12 @@
     font-size: 20px;
     color: white;
 }
+
+.DivelSpeach{
+    display: none;
+}
+.DivelSpeach img{
+    position: absolute;
+    margin-top: 200px;
+    z-index: 100;
+}

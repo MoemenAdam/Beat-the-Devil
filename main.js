@@ -1,6 +1,17 @@
 'use strict';
 // Music Start
 
+let play = document.getElementById("MusicBTN");
+function playMusic(){
+    var sound = new Howl({
+        urls: ['Music/Song.mp3']
+    }).play();
+}
+play.addEventListener("click",playMusic);
+
+// var sound2 = new Howl({
+//     urls: ['Music/AttackSound2.mp3']
+// });
 
 // Music End
 
@@ -16,6 +27,7 @@ let MainWidth = 55,Mainheight = 100;
 let xPressed=false;
 let LeftP=false,RightP=false,xP=false,Dash=false;
 let LastL=false,LastUpdated='idle';
+let isActive=false;
 /* Main varaiables */
 
 // Background Calss 
@@ -68,6 +80,10 @@ class Player{
         this.Frame=0;
         this.NumberofFramesPassed=0;
         this.Delay=15;
+
+        this.CurrentAnimation;
+        // this.CurrentAnimation.isActive=false;
+
         Mainheight=this.height;
         MainWidth=this.width;
 
@@ -85,6 +101,7 @@ class Player{
         this.image = this.Animation[key].image;
         this.Delay = this.Animation[key].Delay;
         this.FramesRate = this.Animation[key].FrameRate;
+        this.CurrentAnimation = this.Animation[key];
     }
 
 
@@ -147,6 +164,13 @@ class Player{
             if(this.Frame<(this.FramesRate-1))this.Frame++;
             else this.Frame=0;
         }
+
+        if(this.CurrentAnimation?.onComplete){
+            if(this.Frame === this.FramesRate-1 && !isActive){
+                this.CurrentAnimation.onComplete();
+                isActive=true;
+            }
+        }
     }
 
     PlayerUpdate(){
@@ -171,6 +195,11 @@ class Player{
     }
 };
 //Math.floor(Math.random() * (canvas.width-MainWidth)),canvas.height-Mainheight
+
+const overlay = {
+    opacity:0,
+}
+
 
 const Player1 = new Player(0,420,4,'images/Warrior/idle.png',{
     idle:{
@@ -248,7 +277,13 @@ const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
     Death:{
         imageSrc : 'images/Death/Death.png',
         FrameRate : 23,
-        Delay : 15
+        Delay : 15,
+        onComplete:() =>{
+            console.log('Done');
+            gsap.to(overlay,{
+                opacity:1
+            });
+        },
     },
     None:{
         imageSrc : 'images/None.png',
@@ -257,6 +292,7 @@ const Enemy = new Player(1160,320,9,'images/idle/idleLeft.png',{
     }
 });
 const background = new Assets(0,0,'images/Background/Background3.png');
+
 
 
 
@@ -278,6 +314,8 @@ function DeathScene(){
     Enemy.PlayerUpdate();
     document.querySelector('#PlayerStaminaBar').style.width='0%';
     document.querySelector('.parent').style.opacity = '0.2';
+
+    
 
     Player1.CanMove.x=0;
     Player1.CanMove.y=0;
@@ -309,6 +347,7 @@ function EnemyDeathScene(){
     document.querySelector('.parent').style.opacity = '0.2';
     
 
+
     if(ShouldiStop === false){
         Enemy.swichAnimation('Death');
         Enemy.position.y=330;
@@ -325,6 +364,11 @@ function EnemyDeathScene(){
         Enemy.CanMove.y=0;
         ShouldiStop=true;
     }
+    c.save();
+    c.globalAlpha = overlay.opacity;
+    c.fillstyle='black';
+    c.fillRect(0,0,canvas.width,canvas.height);
+    c.restore();
 }
 
 let test=35,testy=310;
@@ -333,6 +377,7 @@ function Anime(){
     if(!ShouldiStop)window.requestAnimationFrame(Anime);
     else {
         ShouldiStop=false;
+        
         if(PlayerDeath)DeathScene();
         else if(EnemyDeath)EnemyDeathScene();
     }
@@ -419,7 +464,7 @@ function Anime(){
         // Edit if Enemy Attacked
         if(Player1.position.x <= Enemy.position.x+150)if(Player1.position.x <= Enemy.position.x+150  && Player1.position.x+50 >= Enemy.position.x  && Player1.CanMove.y===0)Damage2Counter+=(1/120);
         
-        if(Damage2Counter>=0.1){
+        if(Damage2Counter>=0.07){
             Damage2Counter=0;
             document.querySelector('#HealthBar').style.width = PlayerHealthBar +'%';
             PlayerHealthBar +=1;
@@ -487,6 +532,7 @@ window.addEventListener("keydown",(e)=>{
             xPressed=true;
             break;
     }
+    // if(xP)sound2.play();
 });
 
 window.addEventListener("keyup",(e)=>{
