@@ -544,7 +544,7 @@ function EnemyDeathScene(){
     }
     
 }
-
+let PortalMov=true;
 let test=35,testy=310;
 function Anime(){
     // Main Screen Reapeat
@@ -566,6 +566,7 @@ function Anime(){
         Portal.PlayerUpdate();
         if(Portal.position.x-Player1.position.x <=-60 && Portal.position.x-Player1.position.x>=-127 && Player1.CanMove.y==0){
             Player1.CanMove.x=0;
+            PortalMov=false;
             document.querySelector('.DivelSpeach').style.display='none';
             NextPhases=false;
             gsap.to(overlay,{
@@ -578,6 +579,7 @@ function Anime(){
                         opacity:0,
                     })
                     sound.play();
+                    PortalMov=true;
                 }
             });
             EnemyDone=false;
@@ -649,12 +651,12 @@ function Anime(){
 
     Player1.CanMove.x=0;
     Enemy.CanMove.x=0;
-    if(LeftP){
+    if(LeftP && PortalMov){
         Player1.swichAnimation('RunLeft');
         Player1.CanMove.x=-5;
         LastUpdated='RunLeft';
     }
-    else if(RightP){
+    else if(RightP && PortalMov){
         Player1.swichAnimation('Run');
         Player1.CanMove.x=5;
         LastUpdated='Run';
@@ -663,7 +665,7 @@ function Anime(){
         else {Player1.swichAnimation('idle');LastUpdated='idle';}
     }
     
-    if(xP){
+    if(xP && PortalMov){
         if(LastL){Player1.swichAnimation('AttackLeft');LastUpdated='AttackLeft';}
         else {Player1.swichAnimation('Attack');LastUpdated='Attack';}
         // xP=false;
@@ -708,14 +710,14 @@ function Anime(){
     }
     if(Dash && PlayerStaminaBar<=100){
         StaminaDelay=0;
-        if(LastL){
+        if(LastL && PortalMov){
             document.querySelector('#PlayerStaminaBar').style.width = PlayerStaminaBar +'%';
             PlayerStaminaBar++;
             Player1.swichAnimation(LastUpdated);
             Player1.CanMove.x=-11;
             Player1.swichAnimation('RunLeft');
         }
-        else {
+        else if(PortalMov){
             document.querySelector('#PlayerStaminaBar').style.width = PlayerStaminaBar +'%';
             PlayerStaminaBar++;
             Player1.swichAnimation(LastUpdated);
