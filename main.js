@@ -28,6 +28,7 @@ let xPressed=false;
 let LeftP=false,RightP=false,xP=false,Dash=false;
 let LastL=false,LastUpdated='idle';
 let isActive=false;
+let EnemyDone=false;
 /* Main varaiables */
 
 // Background Calss 
@@ -94,14 +95,17 @@ class Player{
             image.src = this.Animation[i].imageSrc;
             this.Animation[i].image=image;
         }
+        this.loop=true;
     }
     swichAnimation(key){
+        if(EnemyDone)return;
         if(this.image === this.Animation[key].image)return;
 
         this.image = this.Animation[key].image;
         this.Delay = this.Animation[key].Delay;
         this.FramesRate = this.Animation[key].FrameRate;
         this.CurrentAnimation = this.Animation[key];
+        if(key === 'Death')this.loop=false;
     }
 
 
@@ -162,12 +166,16 @@ class Player{
 
         if(this.NumberofFramesPassed%this.Delay === 0){
             if(this.Frame<(this.FramesRate-1))this.Frame++;
-            else this.Frame=0;
+            else if(this.loop) this.Frame=0;
         }
 
         if(this.CurrentAnimation?.onComplete){
             if(this.Frame === this.FramesRate-1 && !isActive){
                 this.CurrentAnimation.onComplete();
+                this.image.src='images/None.png';
+                document.querySelector('.parent').style.opacity='0.2';
+                document.querySelector('.DivelSpeach').style.display='block';
+                document.querySelector('.DivelSpeach').innerHTML = '<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=1000&pause=2000&color=F7F7F7&width=1000&lines=Will+Done;Good+job+by+killing+the+Devil+Personal+guard;Now+Enter+The+Portal+to+Fight+the+Deivl+by+Pressing+Enter+at+the+Portal"/>';
                 isActive=true;
             }
         }
@@ -393,49 +401,50 @@ function Anime(){
     Player1.PlayerUpdate();
     Enemy.PlayerUpdate();
     // Move enemy towards Our Player
-    
-    if(EnemyDelay>=120){
-        if(Player1.position.x +10 < Enemy.position.x ){
-            Enemy.swichAnimation('Run');
-            Enemy.position.x-=EnemySpeed;
-            AttackCounter=0;
-        }else{
-            if(Player1.position.x  > Enemy.position.x + 230){
+    if(!EnemyDone){
+        if(EnemyDelay>=120){
+            if(Player1.position.x +10 < Enemy.position.x ){
+                Enemy.swichAnimation('Run');
+                Enemy.position.x-=EnemySpeed;
                 AttackCounter=0;
-                Enemy.swichAnimation('RunLeft');
-                Enemy.position.x+=EnemySpeed;
             }else{
-                Enemy.position.y=345;
-                if(Player1.CanMove.y === 0){   
-                    if(Player1.position.x  -100 <= Enemy.position.x)Enemy.swichAnimation('Attack');
-                    else Enemy.swichAnimation('AttackLeft');
-                    AttackCounter++;
-                    if(Player1.position.x+100 >= Enemy.position.x)DamageCounter+=(1/120);
-                    
-                }else {
+                if(Player1.position.x  > Enemy.position.x + 230){
                     AttackCounter=0;
-                    if(Player1.position.x>= Enemy.position.x)Enemy.swichAnimation('idleLeft');
-                    else Enemy.swichAnimation('idle');
-                }
+                    Enemy.swichAnimation('RunLeft');
+                    Enemy.position.x+=EnemySpeed;
+                }else{
+                    Enemy.position.y=345;
+                    if(Player1.CanMove.y === 0){   
+                        if(Player1.position.x  -100 <= Enemy.position.x)Enemy.swichAnimation('Attack');
+                        else Enemy.swichAnimation('AttackLeft');
+                        AttackCounter++;
+                        if(Player1.position.x+100 >= Enemy.position.x)DamageCounter+=(1/120);
+                        
+                    }else {
+                        AttackCounter=0;
+                        if(Player1.position.x>= Enemy.position.x)Enemy.swichAnimation('idleLeft');
+                        else Enemy.swichAnimation('idle');
+                    }
 
-                if(DamageCounter>=0.8){
-                    DamageCounter=0;
-                    AttackCounter=0;
-                    document.querySelector('#PlayerHealthBar').style.width = EnemyHealthBar +'%';
-                    EnemyHealthBar +=10;
+                    if(DamageCounter>=0.8){
+                        DamageCounter=0;
+                        AttackCounter=0;
+                        document.querySelector('#PlayerHealthBar').style.width = EnemyHealthBar +'%';
+                        EnemyHealthBar +=10;
+                    }
+                    // Player  Dies
+                    if(EnemyHealthBar >= 110){
+                        document.querySelector('#LoseScreen').style.display='block';
+                        document.querySelector('#LoseScreenBTN').addEventListener("click",()=>{
+                            location.reload();
+                        });
+                        ShouldiStop=true;
+                        PlayerDeath=true;
+                    }
+                    if(EnemyHealthBar >=110){
+                        EnemyHealthBar-=10;
+                    }   
                 }
-                // Player/Enemy  Dies
-                if(EnemyHealthBar >= 110){
-                    document.querySelector('#LoseScreen').style.display='block';
-                    document.querySelector('#LoseScreenBTN').addEventListener("click",()=>{
-                        location.reload();
-                    });
-                    ShouldiStop=true;
-                    PlayerDeath=true;
-                }
-                if(EnemyHealthBar >=110){
-                    EnemyHealthBar-=10;
-                }   
             }
         }
     }
@@ -457,7 +466,6 @@ function Anime(){
     }
     
     if(xP){
-        Player1.Scale=arr[1];
         if(LastL){Player1.swichAnimation('AttackLeft');LastUpdated='AttackLeft';}
         else {Player1.swichAnimation('Attack');LastUpdated='Attack';}
         // xP=false;
@@ -469,16 +477,19 @@ function Anime(){
             document.querySelector('#HealthBar').style.width = PlayerHealthBar +'%';
             PlayerHealthBar +=1;
         }
-            // Player/Enemy  Dies
-        if(PlayerHealthBar === 101){
-            document.querySelector('#WinScreen').style.display='block';
-            document.querySelector('#WinScreenBTN').addEventListener("click",()=>{
-                location.reload();
-            });
-            ShouldiStop=true;
-            EnemyDeath=true;
+        // Enemy Dies
+        if(PlayerHealthBar === 101 && !EnemyDone){
+            // document.querySelector('#WinScreen').style.display='block';
+            // document.querySelector('#WinScreenBTN').addEventListener("click",()=>{
+            //     location.reload();
+            // });
+            // ShouldiStop=true;
+            // EnemyDeath=true;
+            Enemy.swichAnimation('Death');
+            EnemyDone=true;
+            xP=false;
         }
-        if(PlayerHealthBar >=101){
+        if(PlayerHealthBar >101){
             PlayerHealthBar-=1;
         }
     }
