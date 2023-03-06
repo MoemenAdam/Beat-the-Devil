@@ -312,18 +312,12 @@ const Portal = new Player(1160,320,8,'images/Portalidle.png',{
         imageSrc : 'images/Portalstart.png',
         FrameRate : 8,
         Delay : 15,
-        onComplete:() =>{
-            
-        },
     },
     end:{
         imageSrc : 'images/Portalend.png',
         FrameRate : 8,
         Delay : 15,
         loop:false,
-        onComplete:() =>{
-            
-        },
     },
     None:{
         imageSrc : 'images/None.png',
